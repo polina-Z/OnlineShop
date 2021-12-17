@@ -41,7 +41,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.ManyToManyField(Address, verbose_name="Address", related_name="customer_addresses", null=True)
     birthdate = models.DateField(verbose_name="Birth Date")
-    image = models.ImageField(verbose_name="User Image")
+    image = models.ImageField(verbose_name="User Image", null=True)
     phone = models.CharField(max_length=13, verbose_name="Phone Number")
     store_owner = models.BooleanField(default=False, verbose_name="Shop Owner")
     date_joined = models.DateField(default=now(), verbose_name="Date Joined")
