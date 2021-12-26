@@ -20,11 +20,6 @@ class UserApiView(RetrieveAPIView):
         return self.request.user
 
 
-class UserListView(generics.ListAPIView):
-    queryset = Customer.objects.all()
-    serializer_class = UserAdminSerializer
-
-
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
@@ -58,3 +53,18 @@ def signup(request):
             return JsonResponse({"error": "All necessary fields not provided"}, status=400)
         except IntegrityError as ex:
             return JsonResponse({"error": str(ex)}, status=400)
+
+
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if user is None:
+            return JsonResponse({'error': 'Could not login. Please check username and password'}, status=400)
+        else:
+            try:
+                token = Token.objects.get(user=user)
+            except:
+                token = Token.objects.create(user=user)
+            return JsonResponse({'token': str(token)}, status=200)

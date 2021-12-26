@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from shop.models import Customer
 
+
 class UserAdminSerializer(serializers.ModelSerializer):
     password = serializers.ReadOnlyField()
     date_joined = serializers.ReadOnlyField()
