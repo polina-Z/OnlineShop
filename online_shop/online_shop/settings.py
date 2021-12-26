@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y+%0tov!do=o@--p_4nc%ow9e83dilreb+e5nile^@ldj-o-+@'
+SECRET_KEY = os.environ.get('SECRET_KEY', "bjekwfbewjhfbewh,jb3t27rfg3uy3f2uiuxgbn7i")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 
 
 # Application definition
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'colorfield',
     'shop',
     'rest_framework',
+    'rest_framework.authtoken',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -78,12 +80,12 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'onlineshop',
-        'USER': 'shopuser',
-        'PASSWORD': 'p123456',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': os.environ.get("DB_ENGINE", 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get("DB_DATABASE", 'onlineshop'),
+        'USER': os.environ.get("DB_USER", 'shopuser'),
+        'PASSWORD': os.environ.get("DB_PASSWORD", 'p123456'),
+        'HOST': os.environ.get("DB_HOST", 'localhost'),
+        'PORT': os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -110,7 +112,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
 }
 
 
