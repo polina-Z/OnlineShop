@@ -5,19 +5,18 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from shop.models import Customer, Address
 from django.contrib.auth.models import User
-from rest_framework import generics
-from .serializers import UserAdminSerializer
+from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.authtoken.models import Token
+from .serializers import UserAdminSerializer, AddressSerializer
 
 
-class UserApiView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserAdminSerializer
-
-    def get_object(self):
-        return self.request.user
+# User
+class UserListView(generics.ListAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 @csrf_exempt
@@ -68,3 +67,13 @@ def login(request):
             except:
                 token = Token.objects.create(user=user)
             return JsonResponse({'token': str(token)}, status=200)
+
+
+class AddressList(generics.ListAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        customer = Customer.objects.get(user=user)
+        return customer.address.all()

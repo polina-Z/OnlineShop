@@ -80,15 +80,14 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("DB_ENGINE", 'django.db.backends.postgresql_psycopg2'),
-        'NAME': os.environ.get("DB_DATABASE", 'onlineshop'),
-        'USER': os.environ.get("DB_USER", 'shopuser'),
-        'PASSWORD': os.environ.get("DB_PASSWORD", 'p123456'),
-        'HOST': os.environ.get("DB_HOST", 'localhost'),
-        'PORT': os.environ.get("DB_PORT", "5432"),
+        'ENGINE': os.environ.get("POSTGRES_ENGINE", 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get("POSTGRES_DATABASE", 'onlineshop'),
+        'USER': os.environ.get("POSTGRES_USER", 'shopuser'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'p123456'),
+        'HOST': os.environ.get("POSTGRES_HOST", 'localhost'),
+        'PORT': os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
