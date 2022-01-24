@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models import Customer, Address, Category, ProductColor, Product, ProductImage
+from .models import Customer, Address, Category, ProductColor, Product, ProductImage, Shop
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -32,4 +32,42 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['title', 'slug']
+        fields = ['id', 'title', 'slug', 'image']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    # shop = ShopSerializer()
+    category = CategorySerializer()
+
+    class Meta:
+        model = Product
+        fields = ['title', 'shop', 'category', 'description', 'price', 'total_count', 'size']
+
+
+class ProductColorSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = ProductColor
+        fields = ['color']
+
+
+class ProductCreateSerializer(serializers.ModelSerializer):
+    created_at = serializers.ReadOnlyField()
+    size = serializers.ListField()
+
+    class Meta:
+        model = Product
+        fields = "__all__"
+
+
+class ShopAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ['title', 'image', 'info']
+
+
+class ShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = "__all__"
