@@ -1,0 +1,41 @@
+.shop {
+  width: 50%;
+  height: 300px;
+  margin: auto auto 20px;
+  border: 2px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+
+  .shop-item {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    
+
+    .shop-image {
+      width: 100%;
+      height: 90%;
+      background-size: cover;
+      margin-left: 20px;
+      margin-right: 20px;
+      background-position: center;
+    }
+
+    .text-container {
+      width: 90%;
+      height: 90%;
+      border: 1px solid grey;
+    }
+
+    .container {
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+}
