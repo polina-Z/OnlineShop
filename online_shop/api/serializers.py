@@ -1,5 +1,13 @@
 from rest_framework import serializers
 from .models import Customer, Address, Category, ProductColor, Product, ProductImage, Shop
+from django.contrib.auth.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'date_joined', 'is_superuser', 'email']
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -22,6 +30,7 @@ class UserAdminSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     address = AddressSerializer(many=True)
+    user = UserSerializer()
 
     class Meta:
         model = Customer

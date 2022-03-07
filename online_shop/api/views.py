@@ -200,9 +200,26 @@ class ProductUpdateView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ShopCreateView(generics.CreateAPIView):
-    queryset = Shop.objects.all()
-    serializer_class = ShopAddSerializer
     permission_classes = [IsShopOwner]
+    serializer_class = ShopSerializer
+
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        owner = Customer.objects.get(user=request.user)
+        created_date = timezone.now()
+        request.data.update({'owner': owner, 'created_date': created_date})
+        serializer = self.get_serializer(data={**request.data})
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            response = super(ShopCreateView, self).post(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response({'detail': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        return response
 
 
 class MyShopsListView(generics.ListAPIView):

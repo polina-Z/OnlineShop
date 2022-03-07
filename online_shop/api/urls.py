@@ -12,6 +12,7 @@ urlpatterns = [
     path('signup/', views.signup),
     path('login/', views.LoginView.as_view()),
     path('refresh_token/', views.RefreshTokenView.as_view()),
+    # # path('refresh_token/', TokenRefreshView.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('logout/', views.LogoutView.as_view()),
 
